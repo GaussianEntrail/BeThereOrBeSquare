@@ -66,15 +66,25 @@ namespace AvoidMakingSquares
         public bool check(int r, int c, int p) { return (get(r, c) == p); }
         public bool square(int r, int c, int p)
         {
+            /* (R-S,C-S) | (R,C-S) | (R+S,C-S)
+             * 
+             * (R-S,C)   | (R,C)   | (R+S, C)
+             * 
+             * (R-S,C+S) | (R,C+S) | (R+S,C+S)
+             */
             //set check to 1 or -1 if checking for human or computer piece
             //the starting (r,c) isn't checked so this can be used to make the computer pick a space intelligently
-            bool square1 = false, square2 = false;
+            bool UL = false,  UR = false, DL = false, DR = false;
             int s;
             for (s = 1; s < size; s++)
             {
-                square1 = check(r + s, c, p) && check(r, c + s, p) && check(r + s, c + s, p);
-                square2 = check(r - s, c, p) && check(r, c - s, p) && check(r - s, c - s, p);
-                if (square1 || square2) { return true; }
+                UL = check(r, c - s, p) && check(r - s, c - s, p) && check(r - s, c, p);
+                UR = check(r, c - s, p) && check(r + s, c - s, p) && check(r + s, c, p);
+                DL = check(r - s, c, p) && check(r - s, c + s, p) && check(r, c + s, p);
+                DR = check(r, c + s, p) && check(r + s, c + s, p) && check(r + s, c, p);
+
+                if (UL || UR || DL || DR) { return true; }
+
             }
             return false;
         }
