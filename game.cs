@@ -66,25 +66,36 @@ namespace AvoidMakingSquares
         public bool check(int r, int c, int p) { return (get(r, c) == p); }
         public bool square(int r, int c, int p)
         {
-            /* (R-S,C-S) | (R,C-S) | (R+S,C-S)
+            /* 
+             *                       | (R,C-2S)|
+             *                       
+             *           | (R-S,C-S) | (R,C-S) | (R+S,C-S) |
              * 
-             * (R-S,C)   | (R,C)   | (R+S, C)
+             * (R-2S,C)  | (R-S,C)   | (R,C)   | (R+S, C)  | (R+2S,C)
              * 
-             * (R-S,C+S) | (R,C+S) | (R+S,C+S)
+             *           | (R-S,C+S) | (R,C+S) | (R+S,C+S) |
+             *                       
+             *                       | (R,C+2S)|
              */
-            //set check to 1 or -1 if checking for human or computer piece
+            //set check to 1 or 2 if checking for human or computer piece respectively
             //the starting (r,c) isn't checked so this can be used to make the computer pick a space intelligently
-            bool UL = false,  UR = false, DL = false, DR = false;
+            bool N = false, S = false, E = false, W = false;
+            bool NW = false,  NE = false, SW = false, SE = false;
             int s;
             for (s = 1; s < size; s++)
             {
-                UL = check(r, c - s, p) && check(r - s, c - s, p) && check(r - s, c, p);
-                UR = check(r, c - s, p) && check(r + s, c - s, p) && check(r + s, c, p);
-                DL = check(r - s, c, p) && check(r - s, c + s, p) && check(r, c + s, p);
-                DR = check(r, c + s, p) && check(r + s, c + s, p) && check(r + s, c, p);
-
-                if (UL || UR || DL || DR) { return true; }
-
+                //check straight squares
+                NW = check(r, c - s, p) && check(r - s, c - s, p) && check(r - s, c, p);
+                NE = check(r, c - s, p) && check(r + s, c - s, p) && check(r + s, c, p);
+                SW = check(r - s, c, p) && check(r - s, c + s, p) && check(r, c + s, p);
+                SE = check(r, c + s, p) && check(r + s, c + s, p) && check(r + s, c, p);
+                if (NW || NE || SW || SE) { return true; }
+                //check diagonal squares
+                N = check(r - s, c - s, p) && check(r + s, c - s, p) && check(r, c - (2*s), p);
+                W = check(r - s, c - s, p) && check(r - (2*s), c - s, p) && check(r - s, c + s, p);
+                S = check(r - s, c + s, p) && check(r, c + (2*s), p) && check(r + s, c + s, p);
+                E = check(r + s, c + s, p) && check(r + (2*s), c , p) && check(r + s, c - s, p);
+                if (N || S || E || W) { return true; }
             }
             return false;
         }
@@ -93,14 +104,15 @@ namespace AvoidMakingSquares
             Console.Clear();
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("x║0123456║\n");
-            Console.Write("═╬═══════╣\n");
+            Console.Write("╔═╦═══════╗\n");
+            Console.Write("║x║0123456║\n");
+            Console.Write("╠═╬═══════╣\n");
             int r, c, p;
             for (r = 0; r < size; r++)
             {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(r+"║");
+                Console.Write("║{0}║",r);
                 for (c = 0; c < size; c++)
                 {
                     Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -133,7 +145,7 @@ namespace AvoidMakingSquares
             }
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("═╩═══════╝\n");
+            Console.Write("╚═╩═══════╝\n");
             Console.WriteLine("PLAYER: {0} COMPUTER: {1}",PlayerScore,ComputerScore);
             Console.WriteLine(status);
         }
