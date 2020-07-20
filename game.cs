@@ -153,17 +153,21 @@ namespace AvoidMakingSquares
                 //check if it's empty and if it won't form a square
                 if (empty(r, c))
                 {
-                    if (!square(r, c, 2) && rng.Next(100) > 10)
+                    if (!square(r, c, 2))
                     {
-                        status = String.Format("The computer places a piece at row {0},  column {1}", r, c);
-                        set(r, c, 2);
-                        break;
-                    }
-                    if (square(r, c, 2) && rng.Next(100) > 90)
-                    {
-                        status = String.Format("The computer places a piece at row {0},  column {1}", r, c);
-                        set(r, c, 2);
-                        break;
+                        if (rng.Next(100) > 20)
+                        {
+                            status = String.Format("The computer places a piece at row {0},  column {1}", r, c);
+                            set(r, c, 2);
+                            break;
+                        }
+                    } else {
+                        if (rng.Next(100) > 80)
+                        {
+                            status = String.Format("The computer places a piece at row {0},  column {1}", r, c);
+                            set(r, c, 2);
+                            break;
+                        }
                     }
                 }
             }
