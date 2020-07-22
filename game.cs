@@ -67,15 +67,15 @@ namespace AvoidMakingSquares
         public bool square(int r, int c, int p)
         {
             /* 
-             *                       |0(R,C-2S)|
+             *                       | (R,C-2S)|
              *                       
-             *           |1(R-S,C-S) |2(R,C-S) |3(R+S,C-S) |
+             *           | (R-S,C-S) | (R,C-S) | (R+S,C-S) |
              * 
-             * 4(R-2S,C) |5(R-S,C)   | (R,C)   |6(R+S, C)  |7(R+2S,C)
+             *  (R-2S,C) | (R-S,C)   | (R,C)   | (R+S, C)  | (R+2S,C)
              * 
-             *           |8(R-S,C+S) |9(R,C+S) |10(R+S,C+S) |
+             *           | (R-S,C+S) | (R,C+S) | (R+S,C+S) |
              *                       
-             *                       |11(R,C+2S)|
+             *                       | (R,C+2S)|
              */
             //set check to 1 or 2 if checking for human or computer piece respectively
             //the starting (r,c) isn't checked so this can be used to make the computer pick a space intelligently
