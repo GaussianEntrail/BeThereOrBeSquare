@@ -67,35 +67,32 @@ namespace AvoidMakingSquares
         public bool square(int r, int c, int p)
         {
             /* 
-             *                       | (R,C-2S)|
+             *                       |0(R,C-2S)|
              *                       
-             *           | (R-S,C-S) | (R,C-S) | (R+S,C-S) |
+             *           |1(R-S,C-S) |2(R,C-S) |3(R+S,C-S) |
              * 
-             * (R-2S,C)  | (R-S,C)   | (R,C)   | (R+S, C)  | (R+2S,C)
+             * 4(R-2S,C) |5(R-S,C)   | (R,C)   |6(R+S, C)  |7(R+2S,C)
              * 
-             *           | (R-S,C+S) | (R,C+S) | (R+S,C+S) |
+             *           |8(R-S,C+S) |9(R,C+S) |10(R+S,C+S) |
              *                       
-             *                       | (R,C+2S)|
+             *                       |11(R,C+2S)|
              */
             //set check to 1 or 2 if checking for human or computer piece respectively
             //the starting (r,c) isn't checked so this can be used to make the computer pick a space intelligently
-            bool N = false, S = false, E = false, W = false;
-            bool NW = false,  NE = false, SW = false, SE = false;
             int s;
+            //note to self... remove these bools, and instead return immediately the moment a square is detected
             for (s = 1; s < size; s++)
             {
                 //check straight squares
-                NW = check(r, c - s, p) && check(r - s, c - s, p) && check(r - s, c, p);
-                NE = check(r, c - s, p) && check(r + s, c - s, p) && check(r + s, c, p);
-                SW = check(r - s, c, p) && check(r - s, c + s, p) && check(r, c + s, p);
-                SE = check(r, c + s, p) && check(r + s, c + s, p) && check(r + s, c, p);
-                if (NW || NE || SW || SE) { return true; }
+                if (check(r, c - s, p) && check(r - s, c - s, p) && check(r - s, c, p)) { return true; } //NW
+                if (check(r, c - s, p) && check(r + s, c - s, p) && check(r + s, c, p)) { return true; } //NE
+                if (check(r - s, c, p) && check(r - s, c + s, p) && check(r, c + s, p)) { return true; } //SW
+                if (check(r, c + s, p) && check(r + s, c + s, p) && check(r + s, c, p)) { return true; } //SE
                 //check diagonal squares
-                N = check(r - s, c - s, p) && check(r + s, c - s, p) && check(r, c - (2*s), p);
-                W = check(r - s, c - s, p) && check(r - (2*s), c - s, p) && check(r - s, c + s, p);
-                S = check(r - s, c + s, p) && check(r, c + (2*s), p) && check(r + s, c + s, p);
-                E = check(r + s, c + s, p) && check(r + (2*s), c , p) && check(r + s, c - s, p);
-                if (N || S || E || W) { return true; }
+                if (check(r - s, c - s, p) && check(r + s, c - s, p) && check(r, c - (2 * s), p)) { return true; } //N
+                if (check(r - s, c - s, p) && check(r - (2 * s), c - s, p) && check(r - s, c + s, p)) { return true; } //S
+                if (check(r - s, c + s, p) && check(r, c + (2 * s), p) && check(r + s, c + s, p)) { return true; } //E
+                if (check(r + s, c + s, p) && check(r + (2 * s), c, p) && check(r + s, c - s, p)) { return true; } //W
             }
             return false;
         }
