@@ -44,28 +44,31 @@ namespace AvoidMakingSquares
                         if (r >= 0 && r < g.size && c >= 0 && c < g.size)
                         {
                             if (!g.empty(r, c)) { Console.WriteLine("Please pick an empty space"); }
-                            else
-                            {
-                                g.PlayerMove(r, c);
-                                if (g.square(r, c, 1)) { gameEnd = true; CPUWin = true; break; }
-                                break;
-                            }
+                            else { g.PlayerMove(r, c); break; }
                         }
                         else { Console.WriteLine("That doesn't look like a valid move to me..."); }
                     }
+                    if (g.square(r, c, 1)) { gameEnd = true; CPUWin = true; break; }
+
                     //show the player move
                     g.draw();
                     Console.ReadKey();
+
                     //computer move
                     rc = g.ComputerMove();
                     if (g.square(rc[0], rc[1], 2)) { gameEnd = true; playerWin = true; break; }
+
+                    //game ending conditions
                     if (g.full()) { gameEnd = true; break; }
-                    if (playerWin || CPUWin) { gameEnd = true; break;}
+                    if (playerWin || CPUWin) {gameEnd = true; break;}
                 }
+
+                if (!playerWin && !CPUWin) { Console.WriteLine("It's a tie!"); } //TIE
+                else if (playerWin) { Console.WriteLine("YOU'RE WINNER"); g.PlayerScore++; } //PLAYER WIN
+                else { Console.WriteLine("LOSER!!"); g.ComputerScore++; } //CPU WIN
+                
                 g.clear();
-                if (!playerWin && !CPUWin) { Console.WriteLine("It's a tie!"); }
-                else if (playerWin) { Console.WriteLine("YOU'RE WINNER"); g.PlayerScore++; }
-                else { Console.WriteLine("LOSER!!"); g.ComputerScore++; }
+                
 
                 while (true)
                 {
