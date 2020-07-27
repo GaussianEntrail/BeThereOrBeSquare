@@ -148,10 +148,9 @@ namespace AvoidMakingSquares
         }
         public int[] ComputerMove()
         {
-            int[] i = new int[2] { -1, -1 };
             if (full()) {
                 status = "The computer can't make a move";
-                return i;
+                return new int[] { -1, -1 };
             }
             //plays semi perfectly for now
             int r, c;
@@ -164,14 +163,14 @@ namespace AvoidMakingSquares
                 {
                     if (!square(r, c, 2))
                     {
-                        if (rng.Next(100) > 20)
+                        if (rng.Next(100) > 30)
                         {
                             status = String.Format("The computer places a piece at row {0},  column {1}", r, c);
                             set(r, c, 2);
                             break;
                         }
                     } else {
-                        if (rng.Next(100) > 80)
+                        if (rng.Next(100) > 70)
                         {
                             status = String.Format("The computer places a piece at row {0},  column {1}", r, c);
                             set(r, c, 2);
@@ -180,9 +179,7 @@ namespace AvoidMakingSquares
                     }
                 }
             }
-            i[0] = r;
-            i[1] = c;
-            return i;
+            return new int[] { r, c };
         }
         public void PlayerMove(int r, int c)
         {
